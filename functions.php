@@ -72,6 +72,18 @@ function themeConfig($form) {
     'solarized' => _t('Solarized')),
     'default', _t('代码主题'), _t('选择代码高亮主题'));
     $form->addInput($codeTheme);
+
+    $visitorStats = new Typecho_Widget_Helper_Form_Element_Textarea('visitorStats', NULL, '', _t('访问人数统计'), _t('在此处填入访问统计代码（如百度统计、Google Analytics等），将显示在网站底部右侧'));
+    $form->addInput($visitorStats);
+
+    $meoIcp = new Typecho_Widget_Helper_Form_Element_Text('meoIcp', NULL, '', _t('MEO备案号'), _t('在此处填入MEO备案号（示例：MEO备案号 12345678）'));
+    $form->addInput($meoIcp);
+
+    $chinaIcp = new Typecho_Widget_Helper_Form_Element_Text('chinaIcp', NULL, '', _t('中国国内备案号'), _t('在此处填入中国国内备案号（示例：京ICP备12345678号）'));
+    $form->addInput($chinaIcp);
+
+    $backgroundImage = new Typecho_Widget_Helper_Form_Element_Text('backgroundImage', NULL, '', _t('全局背景图片'), _t('在此处填入背景图片URL，图片将自动模糊处理，不影响文字阅读'));
+    $form->addInput($backgroundImage);
 }
 
 function themeFields($layout) {

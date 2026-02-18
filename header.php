@@ -22,6 +22,30 @@
         <?php if ($this->options->customCss): ?>
             <?php echo $this->options->customCss; ?>
         <?php endif; ?>
+        <?php if ($this->options->backgroundImage): ?>
+            body {
+                background-image: url('<?php echo $this->options->backgroundImage; ?>');
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+                background-repeat: no-repeat;
+            }
+            body::before {
+                content: '';
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: inherit;
+                filter: blur(10px);
+                z-index: -1;
+            }
+            .site-header, .container, .site-footer, .toc-popup, .toc-toggle-button {
+                background-color: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(5px);
+            }
+        <?php endif; ?>
     </style>
 </head>
 <body data-triangle-animation="<?php echo $this->options->triangleAnimation; ?>" 
