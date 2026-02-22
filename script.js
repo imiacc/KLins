@@ -167,11 +167,71 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    initLazyLoad();
     generateTableOfContents();
     updateReadingInfo();
     observeScrollForTOC();
     initCodeHighlighting();
 });
+
+function initLazyLoad() {
+    const lazyImages = document.querySelectorAll('img[data-src]');
+    
+    lazyImages.forEach(image => {
+        image.classList.add('lazy');
+        
+        image.addEventListener('load', function() {
+            image.classList.add('loaded');
+        });
+    });
+    
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const image = entry.target;
+                    image.src = image.dataset.src;
+                    image.classList.remove('lazy');
+                    imageObserver.unobserve(image);
+                }
+            });
+        });
+        
+        lazyImages.forEach(image => {
+            imageObserver.observe(image);
+        });
+    } else {
+        // Fallback for older browsers
+        let lazyLoadThrottleTimeout;
+        
+        function lazyLoad() {
+            if (lazyLoadThrottleTimeout) {
+                clearTimeout(lazyLoadThrottleTimeout);
+            }
+            
+            lazyLoadThrottleTimeout = setTimeout(() => {
+                const scrollTop = window.pageYOffset;
+                
+                lazyImages.forEach(image => {
+                    if (image.offsetTop < window.innerHeight + scrollTop) {
+                        image.src = image.dataset.src;
+                        image.classList.remove('lazy');
+                    }
+                });
+                
+                if (lazyImages.length === 0) {
+                    document.removeEventListener('scroll', lazyLoad);
+                    window.removeEventListener('resize', lazyLoad);
+                    window.removeEventListener('orientationchange', lazyLoad);
+                }
+            }, 20);
+        }
+        
+        document.addEventListener('scroll', lazyLoad);
+        window.addEventListener('resize', lazyLoad);
+        window.addEventListener('orientationchange', lazyLoad);
+    }
+}
 
 function initCodeHighlighting() {
     const codeHighlightEnabled = document.body.getAttribute('data-code-highlight') === '1';
@@ -460,25 +520,85 @@ function initDarkMode() {
 }
 
 function initBackToTop() {
-    const backToTopButton = document.createElement('button');
-    backToTopButton.className = 'back-to-top-button';
-    backToTopButton.type = 'button';
-    backToTopButton.innerHTML = '<svg viewBox="0 0 20 20"><path d="M10,4 L2,12 L18,12 Z" fill="currentColor"/></svg>';
+    // 检查是否已存在按钮容器
+    let buttonContainer = document.querySelector('.button-container');
     
-    backToTopButton.addEventListener('click', function() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
+    if (!buttonContainer) {
+        // 创建按钮容器
+        buttonContainer = document.createElement('div');
+        buttonContainer.className = 'button-container';
+        document.body.appendChild(buttonContainer);
+    }
+    
+    // 检查是否已存在模式切换按钮
+    let themeButton = document.querySelector('.theme-toggle-button');
+    
+    if (!themeButton) {
+        // 如果不存在，创建一个默认的模式切换按钮
+        themeButton = document.createElement('button');
+        themeButton.className = 'theme-toggle-button';
+        themeButton.textContent = 'Auto';
+        themeButton.type = 'button';
+        
+        // 添加点击事件
+        let currentMode = localStorage.getItem('darkMode') || 'auto';
+        themeButton.addEventListener('click', function() {
+            const modes = ['auto', 'light', 'dark'];
+            const currentIndex = modes.indexOf(currentMode);
+            currentMode = modes[(currentIndex + 1) % modes.length];
+            
+            localStorage.setItem('darkMode', currentMode);
+            
+            // 应用主题
+            if (currentMode === 'auto') {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', currentMode);
+            }
+            
+            // 更新按钮文本
+            themeButton.textContent = currentMode.charAt(0).toUpperCase() + currentMode.slice(1);
         });
-    });
+        
+        buttonContainer.appendChild(themeButton);
+    } else if (themeButton.parentElement !== buttonContainer) {
+        // 如果主题切换按钮存在但不在容器中，将其移动到容器中
+        buttonContainer.appendChild(themeButton);
+    }
     
-    document.body.appendChild(backToTopButton);
+    // 检查是否已存在回到顶部按钮
+    let backToTopButton = document.querySelector('.back-to-top-button');
     
+    if (!backToTopButton) {
+        // 创建回到顶部按钮
+        backToTopButton = document.createElement('button');
+        backToTopButton.className = 'back-to-top-button';
+        backToTopButton.type = 'button';
+        backToTopButton.innerHTML = '<svg viewBox="0 0 20 20"><path d="M10,4 L2,12 L18,12 Z" fill="currentColor"/></svg>';
+        
+        backToTopButton.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        buttonContainer.appendChild(backToTopButton);
+    }
+    
+    // 初始化滚动事件监听
     window.addEventListener('scroll', function() {
         if (window.scrollY > 300) {
-            backToTopButton.classList.add('visible');
+            buttonContainer.classList.add('expanded');
+            if (backToTopButton) {
+                backToTopButton.classList.add('visible');
+            }
         } else {
-            backToTopButton.classList.remove('visible');
+            buttonContainer.classList.remove('expanded');
+            if (backToTopButton) {
+                backToTopButton.classList.remove('visible');
+            }
         }
     });
 }

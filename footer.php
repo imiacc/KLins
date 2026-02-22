@@ -14,11 +14,11 @@
                     <?php endif; ?>
                 </div>
                 <div class="footer-icp">
-                    <?php if ($this->options->meoIcp): ?>
-                        <p><?php echo $this->options->meoIcp; ?></p>
+                    <?php if ($this->options->moeIcp): ?>
+                        <p><a href="https://beian.moe.gov" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;"><?php echo $this->options->moeIcp; ?></a></p>
                     <?php endif; ?>
                     <?php if ($this->options->chinaIcp): ?>
-                        <p><?php echo $this->options->chinaIcp; ?></p>
+                        <div><?php $this->options->chinaIcp(); ?></div>
                     <?php endif; ?>
                 </div>
             </div>

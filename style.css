@@ -1008,6 +1008,24 @@ a:hover {
     opacity: 0.5;
 }
 
+[data-theme="dark"] .comments-area {
+    background-color: #1e2a3a;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+[data-theme="dark"] .comments-area::before {
+    border-bottom-color: var(--ink-light);
+}
+
+[data-theme="dark"] .form-group input[type="text"],
+[data-theme="dark"] .form-group input[type="email"],
+[data-theme="dark"] .form-group input[type="url"],
+[data-theme="dark"] .form-group textarea {
+    background-color: #2a3b4c;
+    border-color: var(--ink-light);
+    color: var(--ink-dark);
+}
+
 .comments-title {
     font-size: 1.5em;
     margin-bottom: 20px;
@@ -1316,6 +1334,14 @@ a:hover {
     transform: translateY(0);
 }
 
+[data-theme="dark"] .toc-toggle-button {
+    background-color: var(--ink-medium);
+}
+
+[data-theme="dark"] .toc-toggle-button:hover {
+    background-color: var(--ink-light);
+}
+
 .toc-popup {
     position: fixed;
     top: 120px;
@@ -1330,6 +1356,12 @@ a:hover {
     z-index: 999;
 }
 
+[data-theme="dark"] .toc-popup {
+    background-color: #1e2a3a;
+    border-color: var(--ink-light);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
 .toc-popup .article-toc {
     background-color: transparent;
     padding: 20px;
@@ -1341,6 +1373,18 @@ a:hover {
 
 .toc-popup .article-toc::before {
     display: none;
+}
+
+[data-theme="dark"] .toc-title {
+    border-bottom-color: var(--ink-pale);
+}
+
+[data-theme="dark"] .toc-title::after {
+    border-top-color: var(--ink-pale);
+}
+
+[data-theme="dark"] .toc-item::before {
+    border-top-color: var(--ink-pale);
 }
 
 .toc-list {
@@ -1403,72 +1447,127 @@ a:hover {
     font-weight: 500;
 }
 
-.theme-toggle-button {
+.button-container {
     position: fixed;
-    bottom: 80px;
+    bottom: 20px;
     right: 20px;
-    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    z-index: 1000;
+    transition: all 0.3s ease;
+}
+
+.button-container .theme-toggle-button {
+    position: static;
+    padding: 10px;
     background-color: var(--ink-light);
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 5px 0 0 5px;
     cursor: pointer;
     font-size: 14px;
-    z-index: 1000;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    transition: all 0.3s;
-    min-width: 80px;
+    transition: all 0.3s ease;
+    min-width: 60px;
+    text-align: center;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
 }
 
-.theme-toggle-button:hover {
+.button-container.expanded .theme-toggle-button {
+    border-radius: 5px 0 0 5px;
+}
+
+.button-container .theme-toggle-button:hover {
     background-color: var(--ink-medium);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
-.theme-toggle-button:active {
+.button-container .theme-toggle-button:active {
     transform: translateY(0);
 }
 
-.back-to-top-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 10px 20px;
+[data-theme="dark"] .button-container .theme-toggle-button {
+    background-color: var(--ink-medium);
+}
+
+[data-theme="dark"] .button-container .theme-toggle-button:hover {
+    background-color: var(--ink-light);
+}
+
+.button-container .back-to-top-button {
+    position: static;
+    padding: 10px;
     background-color: var(--ink-light);
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 0 5px 5px 0;
     cursor: pointer;
     font-size: 14px;
-    z-index: 1000;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    transition: all 0.3s;
-    min-width: 80px;
+    transition: all 0.3s ease;
+    min-width: 0;
+    width: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     visibility: hidden;
+    height: 40px;
+    overflow: hidden;
 }
 
-.back-to-top-button.visible {
+.button-container.expanded .back-to-top-button {
+    min-width: 60px;
+    width: 60px;
     opacity: 1;
     visibility: visible;
 }
 
-.back-to-top-button:hover {
+.button-container .back-to-top-button:hover {
     background-color: var(--ink-medium);
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
 }
 
-.back-to-top-button:active {
+.button-container .back-to-top-button:active {
     transform: translateY(0);
 }
 
-.back-to-top-button svg {
+[data-theme="dark"] .button-container .back-to-top-button {
+    background-color: var(--ink-medium);
+}
+
+[data-theme="dark"] .button-container .back-to-top-button:hover {
+    background-color: var(--ink-light);
+}
+
+.button-container .back-to-top-button svg {
     width: 20px;
     height: 20px;
     fill: currentColor;
+    transition: all 0.3s ease;
+}
+
+.button-container.expanded .back-to-top-button svg {
+    opacity: 1;
+}
+
+.button-container:not(.expanded) .back-to-top-button svg {
+    opacity: 0;
+}
+
+/* 懒加载样式 */
+img.lazy {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+img.lazy.loaded {
+    opacity: 1;
 }
