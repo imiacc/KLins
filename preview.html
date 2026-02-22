@@ -30,7 +30,7 @@
         }
     </style>
 </head>
-<body>
+<body data-dark-mode="auto">
     <div class="preview-banner">
         <h2>🎨 水墨三角形主题预览</h2>
         <p>这是主题的静态预览页面，实际效果需要在 Typecho 环境中查看</p>
@@ -68,6 +68,30 @@
                 <div class="post-content">
                     <p>这是一个基于 Typecho 的博客主题，以水墨色三角形为主要设计元素。主题采用了简约的设计风格，同时融入了丰富的动画效果。</p>
                     <p>点击页面任意位置可以看到三角形动画效果，悬停在链接上也会有相应的交互反馈。</p>
+                    <h3>修复的问题</h3>
+                    <ul>
+                        <li><strong>滚动条瞬间增长问题：</strong>点击特效和鼠标悬停特效不再导致页面滚动条瞬间增长</li>
+                        <li><strong>鼠标指针点击位置问题：</strong>自定义光标热点已调整，点击点准确对齐到三角形尖端</li>
+                    </ul>
+                    <p><strong>测试方法：</strong></p>
+                    <ul>
+                        <li>在页面各处点击，观察滚动条是否会瞬间出现</li>
+                        <li>尝试点击链接或按钮，感受点击点是否与鼠标指针的视觉位置一致</li>
+                        <li>在页面边缘区域点击，测试特效是否会导致滚动条出现</li>
+                    </ul>
+                    <h3>新功能测试</h3>
+                    <ul>
+                        <li><strong>黑夜模式：</strong>点击右下角的按钮切换 Auto/Light/Dark 模式，观察主题颜色的变化</li>
+                        <li><strong>回到顶部：</strong>滚动页面超过300px后，右下角会出现向上箭头按钮，点击可平滑回到顶部</li>
+                        <li><strong>目录交互：</strong>点击目录按钮后，目录会保持展开状态，再次点击才会关闭</li>
+                    </ul>
+                    <p><strong>黑夜模式说明：</strong></p>
+                    <ul>
+                        <li><strong>Auto：</strong>跟随系统设置自动切换</li>
+                        <li><strong>Light：</strong>强制浅色模式</li>
+                        <li><strong>Dark：</strong>强制深色模式</li>
+                    </ul>
+                    <p>主题在黑夜模式下保持了水墨色系的设计风格，同时优化了阅读体验，包括背景色、文字颜色和交互动画的调整。</p>
                 </div>
                 <div class="post-tags">
                     <a href="#">Typecho</a>
@@ -120,10 +144,99 @@
                 </div>
                 <div class="post-content">
                     <p>安装主题非常简单，只需将主题文件夹上传到 Typecho 的 themes 目录，然后在后台启用即可。</p>
+                    <p>以下是详细的安装步骤：</p>
+                    <ol>
+                        <li>下载主题文件</li>
+                        <li>将主题文件夹上传到 /usr/themes/ 目录</li>
+                        <li>登录 Typecho 后台</li>
+                        <li>进入外观设置</li>
+                        <li>启用本主题</li>
+                        <li>根据需要进行配置</li>
+                    </ol>
+                    <p>主题支持多种配置选项，包括：</p>
+                    <ul>
+                        <li>三角形动画开关和密度控制</li>
+                        <li>文章目录开关和位置选择</li>
+                        <li>文章内容宽度自定义</li>
+                        <li>阅读时间和字数统计显示</li>
+                        <li>自定义CSS支持</li>
+                        <li>代码高亮主题选择</li>
+                        <li>黑夜模式设置</li>
+                    </ul>
+                    <p>这些选项可以在主题设置面板中进行调整，以满足不同的使用需求。</p>
                 </div>
                 <div class="post-tags">
                     <a href="#">安装</a>
                     <a href="#">教程</a>
+                </div>
+                <div class="post-more">
+                    <a href="#">阅读全文</a>
+                </div>
+            </article>
+
+            <article class="post">
+                <h2 class="post-title">
+                    <a href="#">主题配色方案说明</a>
+                </h2>
+                <div class="post-meta">
+                    <span class="date">2026-02-14</span>
+                    <span class="author">作者</span>
+                    <span class="category">设计</span>
+                    <span class="comments">0 条评论</span>
+                </div>
+                <div class="post-content">
+                    <p>本主题采用了水墨风格的配色方案，主要包含以下颜色：</p>
+                    <ul>
+                        <li><strong>深墨色 (#2c3e50)：</strong>主要文字颜色</li>
+                        <li><strong>中墨色 (#5a6c7d)：</strong>次要文字和装饰元素</li>
+                        <li><strong>浅墨色 (#8fa3b8)：</strong>辅助装饰和强调元素</li>
+                        <li><strong>淡墨色 (#b8c5d4)：</strong>背景装饰和边框</li>
+                        <li><strong>背景色 (#f8f9fa)：</strong>页面主背景</li>
+                    </ul>
+                    <p>在黑夜模式下，这些颜色会进行相应的调整，以提供更好的阅读体验：</p>
+                    <ul>
+                        <li>深墨色变为淡墨色，用于主要文字</li>
+                        <li>中墨色变为浅墨色，用于次要元素</li>
+                        <li>浅墨色变为中墨色，用于装饰</li>
+                        <li>淡墨色变为深色，用于边框</li>
+                        <li>背景色变为深蓝色调 (#1a1a2e)</li>
+                    </ul>
+                    <p>这种配色方案既保持了水墨风格的美感，又确保了在不同光照条件下的可读性。</p>
+                </div>
+                <div class="post-tags">
+                    <a href="#">配色</a>
+                    <a href="#">设计</a>
+                </div>
+                <div class="post-more">
+                    <a href="#">阅读全文</a>
+                </div>
+            </article>
+
+            <article class="post">
+                <h2 class="post-title">
+                    <a href="#">代码示例展示</a>
+                </h2>
+                <div class="post-meta">
+                    <span class="date">2026-02-13</span>
+                    <span class="author">作者</span>
+                    <span class="category">示例</span>
+                    <span class="comments">2 条评论</span>
+                </div>
+                <div class="post-content">
+                    <p>主题支持代码高亮功能，以下是代码示例：</p>
+                    <pre><code>function helloWorld() {
+    console.log("Hello, World!");
+    return true;
+}
+
+const result = helloWorld();
+console.log(result);</code></pre>
+                    <p>代码块支持多种高亮主题，包括默认、Atom、Dark、Light、Monokai和Solarized等。</p>
+                    <p>每个代码块都有复制按钮，鼠标悬停时会显示，点击即可复制代码内容。</p>
+                </div>
+                <div class="post-tags">
+                    <a href="#">代码</a>
+                    <a href="#">示例</a>
                 </div>
                 <div class="post-more">
                     <a href="#">阅读全文</a>

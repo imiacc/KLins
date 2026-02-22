@@ -31,6 +31,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function createRandomTriangle() {
         const triangle = document.createElement('div');
         triangle.className = 'random-triangle';
+        triangle.style.position = 'fixed';
+        triangle.style.pointerEvents = 'none';
+        triangle.style.zIndex = '1';
         
         const size = Math.random() * 40 + 20;
         const x = Math.random() * window.innerWidth;
@@ -79,6 +82,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', function(e) {
         const clickTriangle = document.createElement('div');
         clickTriangle.className = 'click-triangle';
+        clickTriangle.style.position = 'fixed';
+        clickTriangle.style.pointerEvents = 'none';
+        clickTriangle.style.zIndex = '9999';
         
         const size = Math.random() * 7 + 5;
         const color = inkColors[Math.floor(Math.random() * inkColors.length)];
@@ -111,10 +117,10 @@ document.addEventListener('DOMContentLoaded', function() {
             dot.style.backgroundColor = dotColor;
             dot.style.left = `${e.clientX}px`;
             dot.style.top = `${e.clientY}px`;
-            dot.style.position = 'absolute';
+            dot.style.position = 'fixed';
             dot.style.borderRadius = '50%';
             dot.style.pointerEvents = 'none';
-            dot.style.zIndex = '1000';
+            dot.style.zIndex = '9999';
             dot.style.opacity = '0.8';
             
             document.body.appendChild(dot);
@@ -140,6 +146,9 @@ document.addEventListener('DOMContentLoaded', function() {
         link.addEventListener('mouseenter', function(e) {
             const hoverTriangle = document.createElement('div');
             hoverTriangle.className = 'click-triangle';
+            hoverTriangle.style.position = 'fixed';
+            hoverTriangle.style.pointerEvents = 'none';
+            hoverTriangle.style.zIndex = '9999';
             
             const size = 8;
             const color = inkColors[Math.floor(Math.random() * inkColors.length)];
@@ -306,11 +315,8 @@ function generateTableOfContents() {
         }
     });
 
-    document.addEventListener('click', function(e) {
-        if (isTocVisible && !tocPopup.contains(e.target) && e.target !== tocButton) {
-            isTocVisible = false;
-            tocPopup.style.display = 'none';
-        }
+    tocPopup.addEventListener('click', function(e) {
+        e.stopPropagation();
     });
 
     const articleInfo = document.createElement('div');
@@ -405,3 +411,79 @@ function observeScrollForTOC() {
         observer.observe(heading);
     });
 }
+
+function initDarkMode() {
+    const defaultMode = document.body.getAttribute('data-dark-mode') || 'auto';
+    let currentMode = localStorage.getItem('darkMode') || defaultMode;
+    
+    function applyTheme(mode) {
+        if (mode === 'auto') {
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+        } else {
+            document.documentElement.setAttribute('data-theme', mode);
+        }
+    }
+    
+    function updateButtonText(mode) {
+        const button = document.querySelector('.theme-toggle-button');
+        if (button) {
+            button.textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
+        }
+    }
+    
+    applyTheme(currentMode);
+    updateButtonText(currentMode);
+    
+    const themeButton = document.createElement('button');
+    themeButton.className = 'theme-toggle-button';
+    themeButton.textContent = currentMode.charAt(0).toUpperCase() + currentMode.slice(1);
+    themeButton.type = 'button';
+    
+    themeButton.addEventListener('click', function() {
+        const modes = ['auto', 'light', 'dark'];
+        const currentIndex = modes.indexOf(currentMode);
+        currentMode = modes[(currentIndex + 1) % modes.length];
+        
+        localStorage.setItem('darkMode', currentMode);
+        applyTheme(currentMode);
+        updateButtonText(currentMode);
+    });
+    
+    document.body.appendChild(themeButton);
+    
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (currentMode === 'auto') {
+            applyTheme('auto');
+        }
+    });
+}
+
+function initBackToTop() {
+    const backToTopButton = document.createElement('button');
+    backToTopButton.className = 'back-to-top-button';
+    backToTopButton.type = 'button';
+    backToTopButton.innerHTML = '<svg viewBox="0 0 20 20"><path d="M10,4 L2,12 L18,12 Z" fill="currentColor"/></svg>';
+    
+    backToTopButton.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+    
+    document.body.appendChild(backToTopButton);
+    
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 300) {
+            backToTopButton.classList.add('visible');
+        } else {
+            backToTopButton.classList.remove('visible');
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    initDarkMode();
+    initBackToTop();
+});
